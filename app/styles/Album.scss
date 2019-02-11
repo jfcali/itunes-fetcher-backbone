@@ -1,0 +1,29 @@
+.album {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-gap: 10px;
+  border: 4px solid black;
+  box-sizing: border-box;
+  padding: 20px;
+  align-items: center;
+
+  &:hover {
+    box-shadow: -5px -5px rgba(0, 0, 0, 0.9);
+    transform: rotateX(-10deg) rotateY(10deg);
+  }
+
+  &__name {
+    font-size: 22px;
+    font-weight: 200;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  &__artist {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px;
+  }
+  &__cover {
+    max-width: 100%;
+  }
+}
