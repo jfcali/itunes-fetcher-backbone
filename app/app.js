@@ -9,24 +9,23 @@ const AppView = Backbone.View.extend({
   el: '#app',
   model: App,
   className: 'album-fetcher',
-  urlRoot: 'https://itunes.apple.com/search',
   events: {
     'change #field': 'onChangeField',
     'click #submit': 'onSubmit'
   },
-  onChangeAdd: e => {
-    console.log('changng', e);
-  },
   onSubmit() {
     const term = this.$el.find('input').val();
     this.$el.find('input').val('');
-
-    console.log(term);
+    catalogue.fetch({
+      data: {
+        term
+      },
+      reset: true,
+      success(res) {},
+      error(e) {}
+    });
   },
   initialize() {},
-  test(e) {
-    console.log(e);
-  },
   render() {
     this.$el.append(searchBarView.render());
     this.$el.append(catalogueView.render());
@@ -36,7 +35,4 @@ const AppView = Backbone.View.extend({
 const appView = new AppView();
 document.addEventListener('DOMContentLoaded', () => {
   appView.render();
-  appView.on('onSubmit', () => {
-    console.log('dhsf');
-  });
 });

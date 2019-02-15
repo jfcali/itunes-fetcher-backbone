@@ -19,7 +19,6 @@ export const AlbumView = Backbone.View.extend({
   render() {
     const name = this.model.get('name');
     const artist = this.model.get('artist');
-    console.log(name, artist);
     this.$el.html(`
       <img src=${this.model.get('image')} class="album__cover">
       <div>
