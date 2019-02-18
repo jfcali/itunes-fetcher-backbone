@@ -29,6 +29,7 @@ const CatalogueView = Backbone.View.extend({
     this.collection.models.map(album => {
       const albumView = new AlbumView({ model: album });
       this.$el.append(albumView.render().$el);
+      return albumView;
     });
     return this;
   }
