@@ -16,8 +16,8 @@ const AppView = Backbone.View.extend({
     'click #clear': 'onClear'
   },
   onChangeField(e) {
-    const value = this.$el.find('#field').val();
-
+    const { value } = e.target;
+    searchBarView.model.set('query', e.target.value);
     if (value !== '') {
       this.$el.find('#submit').attr('disabled', false);
       this.$el.find('#clear').attr('disabled', false);
@@ -31,15 +31,14 @@ const AppView = Backbone.View.extend({
     }
   },
   onSubmit() {
-    const field = this.$el.find('#field');
-    const term = field.val();
+    const term = searchBarView.model.get('query');
 
     const submit = this.$el.find('#submit');
     submit.attr('disabled', true);
 
     const clear = this.$el.find('#clear');
     clear.attr('disabled', true);
-    field.val('');
+    searchBarView.model.set('query', '');
     messageView.model.set('message', 'Searching!!');
 
     catalogue.fetch({
