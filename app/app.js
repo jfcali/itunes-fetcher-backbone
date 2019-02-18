@@ -38,6 +38,7 @@ const AppView = Backbone.View.extend({
 
     const clear = this.$el.find('#clear');
     clear.attr('disabled', true);
+
     searchBarView.model.set('query', '');
     messageView.model.set('message', 'Searching!!');
 
