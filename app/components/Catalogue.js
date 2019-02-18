@@ -24,9 +24,6 @@ const CatalogueView = Backbone.View.extend({
   initialize() {
     this.collection.on('reset', this.render, this);
   },
-  update(e) {
-    console.log(e);
-  },
   render() {
     console.log('rendering', this.collection);
     this.$el.empty();
@@ -34,13 +31,13 @@ const CatalogueView = Backbone.View.extend({
       const albumView = new AlbumView({ model: album });
       this.$el.append(albumView.render().$el);
     });
+    return this;
   }
 });
 
 export const catalogue = new Catalogue();
 
 export const catalogueView = new CatalogueView({
-  el: '#catalogue',
   collection: catalogue,
   className: 'catalogue'
 });

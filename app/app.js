@@ -2,6 +2,7 @@ import './main.scss';
 import Backbone from 'backbone';
 import { catalogue, catalogueView } from './components/Catalogue';
 import { searchBarView } from './components/SearchBar';
+import { messageView } from './components/Messages';
 
 const App = Backbone.Model.extend({});
 
@@ -10,25 +11,76 @@ const AppView = Backbone.View.extend({
   model: App,
   className: 'album-fetcher',
   events: {
-    'change #field': 'onChangeField',
-    'click #submit': 'onSubmit'
+    'keyup #field': 'onChangeField',
+    'click #submit': 'onSubmit',
+    'click #clear': 'onClear'
+  },
+  onChangeField(e) {
+    const value = this.$el.find('#field').val();
+
+    if (value !== '') {
+      this.$el.find('#submit').attr('disabled', false);
+      this.$el.find('#clear').attr('disabled', false);
+    } else {
+      this.$el.find('#submit').attr('disabled', true);
+      this.$el.find('#clear').attr('disabled', true);
+    }
+
+    if (e.key === 'Enter' && value !== '') {
+      this.onSubmit();
+    }
   },
   onSubmit() {
-    const term = this.$el.find('input').val();
-    this.$el.find('input').val('');
+    const field = this.$el.find('#field');
+    const term = field.val();
+
+    const submit = this.$el.find('#submit');
+    submit.attr('disabled', true);
+
+    const clear = this.$el.find('#clear');
+    clear.attr('disabled', true);
+    field.val('');
+    messageView.model.set('message', 'Searching!!');
+
     catalogue.fetch({
       data: {
-        term
+        term,
+        entity: 'album',
+        limit: 200
       },
       reset: true,
-      success(res) {},
-      error(e) {}
+      success(res) {
+        if (res.models.length === 0) {
+          messageView.model.set('message', 'No results! try again.');
+        }
+      },
+      error(e) {
+        messageView.model.set(
+          'message',
+          'Oops, something went wrong. Please try again later!'
+        );
+      }
     });
   },
-  initialize() {},
+  onClear() {
+    this.$el.find('#field').val('');
+  },
+  initialize() {
+    this.field = this.$el.find('#field');
+    this.submit = this.$el.find('#submit');
+    this.clear = this.$el.find('#clear');
+    this.listenTo(catalogueView.collection, 'reset', this.render);
+  },
   render() {
-    this.$el.append(searchBarView.render());
-    this.$el.append(catalogueView.render());
+    console.log('rendering');
+    // this.on('reset', catalogueView, this.render());
+    this.$el.empty();
+    this.$el.append(searchBarView.render().$el);
+    if (catalogueView.collection.models.length) {
+      this.$el.append(catalogueView.render().$el);
+    } else {
+      this.$el.append(messageView.render().$el);
+    }
   }
 });
 
