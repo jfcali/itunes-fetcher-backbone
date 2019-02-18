@@ -8,21 +8,7 @@ const SearchBar = Backbone.Model.extend({
 
 const SearchBarView = Backbone.View.extend({
   className: 'search-bar',
-  events: {
-    'keyup #field': 'onKeyDown'
-  },
-  initialize() {
-    this.field = this.$el.find('#field');
-    this.submit = this.$el.find('#submit');
-    this.clear = this.$el.find('#clear');
-  },
-  onKeyDown(e) {
-    if (e.target.value !== '') {
-      // console.log(this.submit.disabled);
-    }
-  },
   render() {
-    // console.log(this);
     this.$el.html(`
       <input id="field" class="search-bar__field" type="text" 
         placeholder="Search for artists, albums, songs..."

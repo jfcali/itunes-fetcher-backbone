@@ -54,7 +54,7 @@ const AppView = Backbone.View.extend({
           messageView.model.set('message', 'No results! try again.');
         }
       },
-      error(e) {
+      error() {
         messageView.model.set(
           'message',
           'Oops, something went wrong. Please try again later!'
@@ -66,14 +66,9 @@ const AppView = Backbone.View.extend({
     this.$el.find('#field').val('');
   },
   initialize() {
-    this.field = this.$el.find('#field');
-    this.submit = this.$el.find('#submit');
-    this.clear = this.$el.find('#clear');
     this.listenTo(catalogueView.collection, 'reset', this.render);
   },
   render() {
-    console.log('rendering');
-    // this.on('reset', catalogueView, this.render());
     this.$el.empty();
     this.$el.append(searchBarView.render().$el);
     if (catalogueView.collection.models.length) {
